@@ -25,6 +25,23 @@ function validate (nameValue,urlValue) {
 }
 
 }*/
+//Function that fetch data from local storage, if availaible
+function fetchBookmarks() {
+    //get bookmarks from local if availaible
+    if(localStorage.getItem('bookmarks')) {
+        bookmarks= JSON.parse(localStorage.getItem('bookmarks'));
+    }else {
+        //create bookmarks array in local storage
+        bookmarks = [
+            {
+                name : "google",
+                url : "https://google.com"
+            },
+        ];
+        localStorage.setItem('bookmarks',JSON.stringify(bookmarks));
+    }
+    console.log(bookmarks)
+}
 
 // handle Data from form 
 function storeBookmark (e) {
@@ -44,8 +61,8 @@ function storeBookmark (e) {
             url : urlValue
         };
         bookmarks.push(bookmark);
-        console.log(bookmarks);
-        localStorage.setItem('bookmarks',bookmarks)
+        localStorage.setItem('bookmarks',JSON.stringify(bookmarks));
+        fetchBookmarks();
         bookmarkForm.reset();
         websiteNameEl.focus();
     }
@@ -55,6 +72,9 @@ function storeBookmark (e) {
 
 // event listner 
 bookmarkForm.addEventListener('submit', storeBookmark);
+
+// on load, fetch bookmarks
+fetchBookmarks();
 
 
 
